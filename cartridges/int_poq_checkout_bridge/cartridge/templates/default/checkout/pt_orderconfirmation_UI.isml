@@ -1,0 +1,18 @@
+<script>
+  // Poq JS Bridge
+  !function(p,o,q){var e=p.PoqWebCheckout={q:[]},s=["options","send","on","destroy"];function r(n,a){var e=o.createElement(q);q=o.getElementsByTagName(q)[0],e.src=["https://assets.poq.io/web-checkout",n,"min.js"].filter(function(n){return!!n}).join("."),e.async=1,e.crossOrigin="anonymous",a&&(e.integrity=a),q.parentNode.insertBefore(e,q)}function a(n){var a;return(null===(a=document.cookie.match("(^|;)\\s*".concat("poq.webcheckout."+n,"\\s*=\\s*([^;]+)")))||void 0===a?void 0:a.pop())||""}s.forEach(function(n){e[n]=function(){e.q.push([n,arguments])},e[s[0]]=function(n){n.debug&&r("",""),e.q.push([s[0],[n]])}}),p.poqWebCheckout={postMessage:function(n,a){"bridgesettings"===n&&(a=JSON.parse(a),e.q.push([s[0],[a]]),r(a.version,a.integrity))}},p.android?p.android.postMessage("{\"name\":\"ping\"}"):"ios"===a("platform")&&r(a("version"),a("integrity"))}(window,document,"script")
+</script>
+
+<isscript>
+    var poqOrderDetails = {
+        total: pdict.Order.totalGrossPrice.value,
+        orderId: pdict.Order.orderNo,
+        <!-- subTotal: pdict.Order.merchandizeTotalGrossPrice.value, -->
+        delivery: pdict.Order.shippingTotalGrossPrice.value,
+        <!-- discount: pdict.Order.adjustedMerchandizeTotalGrossPrice.value, -->
+        currency: pdict.Order.currencyCode,
+        <!-- tax: pdict.Order.totalTax.value -->
+    };
+</isscript>
+
+<script>var poqOrderDetails = <isprint value="${JSON.stringify(poqOrderDetails)}" encoding="off"/>;</script>

@@ -1,0 +1,7 @@
+coverage/
+doc/
+bin/
+test/mocks/dw
+**/static/*
+cartridges/app_storefront_base/
+cartridges/modules/server
