@@ -1,0 +1,93 @@
+<!--- Subtotal --->
+<div class="row leading-lines subtotal-item">
+    <div class="col-6 start-lines">
+        <p class="order-receipt-label"><span>${Resource.msg('label.order.subtotal','confirmation', null)}</span></p>
+    </div>
+    <div class="col-6 end-lines">
+        <p class="text-right"><span class="sub-total">${pdict.order.totals.subTotal}</span></p>
+    </div>
+</div>
+
+<!--- Order Discount --->
+<div class="row leading-lines order-discount <isif condition="${pdict.order.totals.orderLevelDiscountTotal.value === 0}">hide-order-discount</isif>">
+    <div class="col-6 start-lines">
+        <p class="order-receipt-label"><span>${Resource.msg('label.order.discount', 'common', null)}</span></p>
+    </div>
+    <div class="col-6 end-lines">
+        <p class="text-right"><span class="order-discount-total">- ${pdict.order.totals.orderLevelDiscountTotal.formatted}</span></p>
+    </div>
+</div>
+
+<!--- Shipping Cost --->
+<div class="row leading-lines shipping-item">
+    <div class="col-6 start-lines">
+        <p class="order-receipt-label"><span>${Resource.msg('label.order.shipping.cost','confirmation', null)}</span></p>
+    </div>
+    <div class="col-6 end-lines">
+        <p class="text-right"><span class="shipping-total-cost">${pdict.order.totals.totalShippingCost}</span></p>
+    </div>
+</div>
+
+<!--- Shipping Discount --->
+<div class="row leading-lines shipping-discount <isif condition="${pdict.order.totals.shippingLevelDiscountTotal.value === 0}">hide-shipping-discount</isif>">
+    <div class="col-6 start-lines">
+        <p class="order-receipt-label"><span>${Resource.msg('label.shipping.discount', 'common', null)}</span></p>
+    </div>
+    <div class="col-6 end-lines">
+        <p class="text-right"><span class="shipping-discount-total">- ${pdict.order.totals.shippingLevelDiscountTotal.formatted}</span></p>
+    </div>
+</div>
+
+<!--- Sales Tax --->
+<div class="row leading-lines sales-tax-item">
+    <div class="col-6 start-lines">
+        <p class="order-receipt-label"><span>${Resource.msg('label.order.sales.tax','confirmation', null)}</span></p>
+    </div>
+    <div class="col-6 end-lines">
+        <p class="text-right"><span class="tax-total">${pdict.order.totals.totalTax}</span></p>
+    </div>
+</div>
+
+<!--- Grand Total --->
+<div class="row grand-total leading-lines">
+    <div class="col-6 start-lines">
+        <p class="order-receipt-label"><span>${Resource.msg('label.order.grand.total','confirmation', null)}</span></p>
+    </div>
+    <div class="col-6 end-lines">
+        <p class="text-right"><span class="grand-total-sum">${pdict.order.totals.grandTotal}</span></p>
+    </div>
+</div>
+
+<script>
+  // Poq JS Bridge
+  !function(p,o,q){var e=p.PoqWebCheckout={q:[]},s=["options","send","on","destroy"];function r(n,a){var e=o.createElement(q);q=o.getElementsByTagName(q)[0],e.src=["https://assets.poq.io/web-checkout",n,"min.js"].filter(function(n){return!!n}).join("."),e.async=1,e.crossOrigin="anonymous",a&&(e.integrity=a),q.parentNode.insertBefore(e,q)}function a(n){var a;return(null===(a=document.cookie.match("(^|;)\\s*".concat("poq.webcheckout."+n,"\\s*=\\s*([^;]+)")))||void 0===a?void 0:a.pop())||""}s.forEach(function(n){e[n]=function(){e.q.push([n,arguments])},e[s[0]]=function(n){n.debug&&r("",""),e.q.push([s[0],[n]])}}),p.poqWebCheckout={postMessage:function(n,a){"bridgesettings"===n&&(a=JSON.parse(a),e.q.push([s[0],[a]]),r(a.version,a.integrity))}},p.android?p.android.postMessage("{\"name\":\"ping\"}"):"ios"===a("platform")&&r(a("version"),a("integrity"))}(window,document,"script")
+</script>
+
+<isscript>
+    var poqOrderDetails = {
+        total: pdict.order.totals.grandTotal,
+        orderId: pdict.order.orderNo,
+        <!-- subTotal: pdict.order.merchandizeTotalGrossPrice.value, -->
+        delivery: pdict.order.totals.totalShippingCost,
+        <!-- discount: pdict.order.adjustedMerchandizeTotalGrossPrice.value, -->
+        currency: pdict.order.currencyCode,
+        <!-- tax: pdict.order.totalTax.value -->
+    };
+</isscript>
+
+<script>var poqOrderDetails = <isprint value="${JSON.stringify(poqOrderDetails)}" encoding="off"/>;</script>
+
+<script type="text/javascript">
+PoqWebCheckout.send('paymentcompleted', {
+    order: poqOrderDetails
+});
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    var continueBtn = document.getElementsByClassName("order-confirmation-continue-shopping")[0];
+    if (continueBtn) {
+        continueBtn.addEventListener("click", function() {
+            PoqWebCheckout.send('closewebview');
+        });
+    }
+});
+</script>
