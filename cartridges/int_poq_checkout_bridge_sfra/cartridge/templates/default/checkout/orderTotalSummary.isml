@@ -65,29 +65,33 @@
 
 <isscript>
     var poqOrderDetails = {
-        total: pdict.order.totals.grandTotal,
-        orderId: pdict.order.orderNo,
-        <!-- subTotal: pdict.order.merchandizeTotalGrossPrice.value, -->
-        delivery: pdict.order.totals.totalShippingCost,
+        total: pdict.order.totals.unformattedGrandTotal,
+        orderId: pdict.order.orderNumber,
+        delivery: pdict.order.totals.unformattedTotalShippingCost,
+        currency: pdict.order.totals.currencyCode,
+        tax: pdict.order.totals.unformattedTax
         <!-- discount: pdict.order.adjustedMerchandizeTotalGrossPrice.value, -->
-        currency: pdict.order.currencyCode,
-        <!-- tax: pdict.order.totalTax.value -->
+        <!-- subTotal: pdict.order.merchandizeTotalGrossPrice.value, -->
     };
 </isscript>
 
-<script>var poqOrderDetails = <isprint value="${JSON.stringify(poqOrderDetails)}" encoding="off"/>;</script>
+<script>
+    var poqOrderDetails = <isprint value="${JSON.stringify(poqOrderDetails)}" encoding="off"/>;
+</script>
 
 <script type="text/javascript">
-PoqWebCheckout.send('paymentcompleted', {
-    order: poqOrderDetails
-});
+    console.log(poqOrderDetails);
 
-document.addEventListener("DOMContentLoaded", function(event) {
-    var continueBtn = document.getElementsByClassName("order-confirmation-continue-shopping")[0];
-    if (continueBtn) {
-        continueBtn.addEventListener("click", function() {
-            PoqWebCheckout.send('closewebview');
-        });
-    }
-});
+    PoqWebCheckout.send('paymentcompleted', {
+        order: poqOrderDetails
+    });
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var continueBtn = document.getElementsByClassName("order-confirmation-continue-shopping")[0];
+        if (continueBtn) {
+            continueBtn.addEventListener("click", function() {
+                PoqWebCheckout.send('closewebview');
+            });
+        }
+    });
 </script>
