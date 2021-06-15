@@ -80,8 +80,6 @@
 </script>
 
 <script type="text/javascript">
-    console.log(poqOrderDetails);
-
     PoqWebCheckout.send('paymentcompleted', {
         order: poqOrderDetails
     });
