@@ -80,11 +80,11 @@
 </script>
 
 <script type="text/javascript">
-    console.log(poqOrderDetails);
-
-    PoqWebCheckout.send('paymentcompleted', {
-        order: poqOrderDetails
-    });
+    if (document.location.pathname.endsWith("Order-Confirm")) {
+        PoqWebCheckout.send('paymentcompleted', {
+            order: poqOrderDetails
+        });
+    }
 
     document.addEventListener("DOMContentLoaded", function(event) {
         var continueBtn = document.getElementsByClassName("order-confirmation-continue-shopping")[0];
